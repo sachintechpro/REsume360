@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>REsume360 — Career & Market Value</title>
+<style>
+:root{--ink:#202124;--muted:#687078;--line:#e5e8eb;--blue:#1769e0;--bg:#f6f8fa;--card:#fff;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,Arial,sans-serif}
+header{background:#fff;border-bottom:1px solid var(--line);padding:20px max(22px,calc((100vw - 1120px)/2));display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{font-size:22px;font-weight:800;letter-spacing:-.7px}.brand span{color:var(--blue)}.sub{color:var(--muted);font-size:12px}
+main{max-width:1120px;margin:28px auto;padding:0 20px}.hero{padding:22px 0 28px}.hero h1{font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-1.4px;margin:0 0 12px}.hero p{max-width:760px;color:var(--muted);margin:0}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 2px 8px #1c273008}.span12{grid-column:span 12}.span8{grid-column:span 8}.span6{grid-column:span 6}.span4{grid-column:span 4}
+h2{font-size:19px;margin:0 0 8px}h3{font-size:15px;margin:0 0 6px}.muted{color:var(--muted)}.small{font-size:12px;color:var(--muted)}
+label{display:block;font-weight:650;font-size:13px;margin:12px 0 5px}input,textarea,select{width:100%;padding:11px 12px;border:1px solid #d8dde3;border-radius:9px;font:inherit;background:#fff}textarea{min-height:110px;resize:vertical}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;padding:11px 15px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;text-decoration:none;font-size:14px}button.secondary,.btn.secondary{background:#edf3ff;color:#1456b8}button.ghost{background:#f0f2f4;color:#30363c}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.pill{display:inline-block;padding:4px 8px;border-radius:99px;background:#edf3ff;color:#1456b8;font-size:11px;font-weight:700}.pill.green{background:#e8f6ef;color:#13734f}.pill.amber{background:#fff4df;color:#946000}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.kpi{padding:14px;background:#f7f9fb;border-radius:12px}.kpi strong{display:block;font-size:23px;letter-spacing:-.6px}.kpi span{font-size:11px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;border-bottom:1px solid var(--line);padding:10px 8px;vertical-align:top}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.job{padding:14px 0;border-bottom:1px solid var(--line)}.job:last-child{border:0}.job a{font-weight:750;color:#1456b8;text-decoration:none}.job a:hover{text-decoration:underline}
+section{margin:0 0 18px}.hide{display:none!important}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.tab{padding:8px 12px;background:#e9edf2;color:#38414a;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer}.tab.active{background:#202124;color:white}
+footer{margin:28px 0 50px;color:var(--muted);font-size:11px;line-height:1.55}
+.privacy-notice{padding:10px 20px;background:#edf3ff;color:#38414a;text-align:center;font-size:12px}
+@media(max-width:760px){.span8,.span6,.span4{grid-column:span 12}.kpis{grid-template-columns:1fr}.grid{gap:12px}header{padding:15px 18px}}
+@media print{header,.tabs,button,.no-print,#consent{display:none!important}body{background:#fff}.card{box-shadow:none;break-inside:avoid}main{max-width:none;margin:0;padding:0}}
+</style>
+</head>
+<body>
+<div class="privacy-notice" role="note"><strong>Private browser session.</strong> Your resume is processed locally, not uploaded or saved. Reloading or closing clears your session. PDF/DOCX libraries load from public CDNs.</div>
+<header><div><div class="brand">RE<span>sume</span>360</div><div class="sub">Career market value · opportunities · life planning</div></div><div class="small">Private browser session</div></header>
+<main>
+<div class="hero"><h1>Understand your market value.<br>Make your next move with clarity.</h1><p>Start with your resume. Review the career paths it supports, compare salary benchmarks by location, and explore employer-direct opportunities. No resume is sent to employers.</p></div>
+<div class="tabs no-print"><div class="tab active" onclick="showTab('profile',this)">1 · Resume</div><div class="tab" onclick="showTab('market',this)">2 · Salary & market</div><div class="tab" onclick="showTab('jobs',this)">3 · Jobs</div><div class="tab" onclick="showTab('life',this)">4 · Life & wealth</div><div class="tab" onclick="showTab('share',this)">5 · MyResume360</div></div>
+
+<section id="profile">
+<div class="grid">
+ <div class="card span6"><h2>Upload your resume</h2><p class="muted">PDF, DOCX or TXT. Or paste resume text below. The text is processed locally.</p>
+ <label>Choose a file</label><input id="file" type="file" accept=".pdf,.docx,.txt">
+ <label>Or paste resume text</label><textarea id="resumeText" placeholder="Paste your resume text here…"></textarea>
+ <div class="row" style="margin-top:12px"><button onclick="analyzeResume()">Review my resume</button><button class="secondary" onclick="clearSession()">Clear session</button></div>
+ <p class="small" id="parseStatus">For PDF/DOCX, parsing libraries load only when needed.</p></div>
+ <div class="card span6"><h2>Career context</h2><p class="muted">These details refine salary and opportunity matching. Optional; leave blank if you prefer.</p>
+ <label>Current or most recent salary (optional)</label><select id="currentSalary"><option value="">Prefer not to say</option><option>Under $80,000</option><option>$80,000–$110,000</option><option>$110,000–$140,000</option><option>$140,000–$170,000</option><option>$170,000–$200,000</option><option>$200,000+</option></select>
+ <label>Work location / target market</label><input id="location" value="Los Angeles, CA" placeholder="City, State">
+ <label>Work preference</label><select id="workMode"><option>Remote or hybrid</option><option>Remote only</option><option>Hybrid / onsite</option><option>Any</option></select>
+ <label>Employment preference</label><select id="employment"><option>W-2 or contract</option><option>W-2 only</option><option>Contract / consulting</option><option>Any</option></select>
+ <label>Target role titles (optional)</label><input id="targets" placeholder="Senior Project Manager, QA Manager, TPM…"></div>
+ <div class="card span12 hide" id="review"><h2>Resume understanding</h2><p class="muted">Review and correct the summary before running the assessment.</p><label>Profile summary</label><textarea id="summary"></textarea><label>Detected skills / keywords</label><input id="skills"><label>Target role families</label><input id="roles"><div class="row" style="margin-top:12px"><button onclick="runAssessment()">Calculate market value</button><span class="small">Fit score is a transparent keyword heuristic, not a hiring probability.</span></div></div>
+</div>
+</section>
+
+<section id="market" class="hide">
+<div class="grid">
+ <div class="card span12"><h2>Salary & market value</h2><p class="muted">Benchmarks use the latest BLS May 2025 Occupational Employment and Wage Statistics available in this build. BLS figures are occupation-level market statistics, not a promise of an individual offer.</p><div id="salaryOutput"><p class="muted">Upload and review your resume first.</p></div></div>
+ <div class="card span12"><h2>Location context</h2><div id="geoOutput"><p class="muted">Location comparisons appear after assessment.</p></div></div>
+ <div class="card span12"><h2>Independent rate sheet</h2><div id="rateOutput" class="muted">Calculated from the salary estimate using planning multipliers. These are illustrative pricing heuristics, not observed marketplace rates.</div></div>
+</div>
+</section>
+
+<section id="jobs" class="hide">
+<div class="grid"><div class="card span12"><h2>Employer-direct opportunities</h2><p class="muted">Open roles below were checked against official employer career pages on November 20, 2026. Search links open the employer's own job search, not recruiters or aggregators. A vacancy can close or change after verification; recheck the employer page before applying.</p><div id="jobOutput"><p class="muted">Run the resume assessment to see relevant matches.</p></div></div></div>
+</section>
+
+<section id="life" class="hide">
+<div class="grid">
+<div class="card span6"><h2>Monthly income lens</h2><p class="muted">A simple educational framework, not a personal financial plan.</p><div id="lifeOutput">Complete the salary assessment to see an illustrative monthly gross-income view.</div></div>
+<div class="card span6"><h2>Wealth-building topics</h2><ul><li>Emergency savings and high-interest debt priorities</li><li>Employer retirement plans: 401(k), 403(b), matching and vesting</li><li>IRA options and diversified funds / ETFs</li><li>Treasury securities, CDs and cash reserves</li><li>HSA eligibility and qualified expenses</li><li>529 education savings and family planning</li><li>Insurance, beneficiaries, estate documents and Social Security</li></ul><p class="small">Start with <a href="https://www.investor.gov/" target="_blank" rel="noopener">SEC Investor.gov</a>, <a href="https://www.irs.gov/retirement-plans" target="_blank" rel="noopener">IRS retirement plans</a>, <a href="https://www.treasurydirect.gov/" target="_blank" rel="noopener">TreasuryDirect</a> and <a href="https://www.ssa.gov/prepare/plan-retirement" target="_blank" rel="noopener">Social Security retirement</a>.</p></div>
+<div class="card span12"><h2>Ask a wealth-education question</h2><p class="muted">Prepare an email for review. Nothing is sent automatically.</p><label>Your question</label><textarea id="wealthQuestion" placeholder="What would you like to understand?"></textarea><button onclick="emailQuestion()">Prepare email to Sachin</button></div>
+</div>
+</section>
+
+<section id="share" class="hide"><div class="grid"><div class="card span12"><h2>MyResume360 — shareable resume page</h2><p class="muted">Create a static HTML profile from your reviewed summary. It is generated locally and downloaded to your device. Host the file yourself if you want a public URL. The app does not store it.</p><label>Display name</label><input id="shareName" placeholder="Your name"><label>Headline</label><input id="shareHeadline" placeholder="Senior Project Manager | Technology Delivery"><label>Professional summary</label><textarea id="shareSummary"></textarea><label>Contact email (optional)</label><input id="shareEmail" type="email" placeholder="you@example.com"><button onclick="downloadProfile()">Download MyResume360 HTML</button></div></div></section>
+
+<footer>Information is educational and informational only. Salary estimates are modeled from public occupational wage data and resume keyword matching; they are not a guarantee of compensation, a job offer, or an employment outcome. Tax, retirement, investment, insurance, legal and estate topics are not individualized professional advice. Consult qualified professionals for decisions. REsume360 is provided without warranties and disclaims liability to the extent permitted by law. <br><br>Sources: <a href="https://www.bls.gov/oes/tables.htm" target="_blank" rel="noopener">BLS OEWS tables</a> · <a href="https://www.bls.gov/regions/west/news-release/2026/occupationalemploymentandwages_losangeles_20260709.htm" target="_blank" rel="noopener">BLS Los Angeles May 2025 area release</a> · <a href="https://www.irs.gov/newsroom/irs-releases-tax-inflation-adjustments-for-tax-year-2026" target="_blank" rel="noopener">IRS 2026 tax adjustments</a></footer>
+</main>
+<script>
+let resume='', assessment=null;
+const jobs=[
+ {company:'The Walt Disney Company',title:'Sr Project Manager — Data Analytics & Innovation',place:'Celebration, Florida',posted:'Nov 16, 2026',status:'Verified official listing',url:'https://www.disneycareers.com/en/job/celebration/sr-project-manager/391/103388044880',fit:'Technical project / product delivery, AI initiatives, Agile, portfolio coordination.'},
+ {company:'Bank of America',title:'Project Manager — Multiple Locations',place:'Multiple U.S. locations',posted:'Aug 31, 2026',status:'Official job page found · recheck current status',url:'https://careers.bankofamerica.com/en-us/job-detail/26030589/project-manager-multiple-locations',fit:'Enterprise project management and cross-functional delivery.'},
+ {company:'Abbott',title:'Digital Health Solutions Project Manager (Lab Informatics)',place:'Multiple U.S. locations including remote locations',posted:'Listed as recently posted in search result',status:'Official job page found · recheck current status',url:'https://abbott.wd5.myworkdayjobs.com/en-US/abbottcareers/job/Digital-Health-Solutions-Project-Manager--Lab-Informatics-_31156523-1',fit:'Healthcare technology, systems integration and project leadership.'},
+ {company:'Amazon',title:'Senior Program Manager — official job search',place:'United States; filter location',posted:'Search live listings',status:'Official career search',url:'https://www.amazon.jobs/en/search?base_query=Senior+Program+Manager&loc_query=United+States',fit:'Program leadership, metrics, operating model and end-to-end delivery.'},
+ {company:'Microsoft',title:'Program Manager — official job search',place:'United States / Remote filters',posted:'Search live listings',status:'Official career search',url:'https://jobs.careers.microsoft.com/global/en/search?q=program%20manager',fit:'Technical program delivery and product/platform coordination.'},
+ {company:'Toyota',title:'Project / Program Manager — official job search',place:'United States',posted:'Search live listings',status:'Official career search',url:'https://careers.toyota.com/search-jobs/project%20manager/1024/1',fit:'Enterprise transformation, delivery governance and operations.'},
+ {company:'Medtronic',title:'Program Manager — official job search',place:'United States',posted:'Search live listings',status:'Official career search',url:'https://medtronic.wd1.myworkdayjobs.com/MedtronicCareers',fit:'Regulated healthcare technology and cross-functional programs.'},
+ {company:'Farmers Insurance',title:'Technology Project Manager — official job search',place:'United States',posted:'Search live listings',status:'Official career search',url:'https://careers.farmers.com/',fit:'Insurance platforms, claims, policy and digital transformation.'},
+ {company:'JPMorgan Chase',title:'Technology Project Manager — official job search',place:'United States',posted:'Search live listings',status:'Official career search',url:'https://careers.jpmorgan.com/us/en/search-results?search=project%20manager',fit:'Financial services technology and enterprise change.'},
+ {company:'Salesforce',title:'Technical Program Manager — official job search',place:'United States',posted:'Search live listings',status:'Official career search',url:'https://careers.salesforce.com/en/jobs/?search=program%20manager',fit:'Cloud platform, integrations and product delivery.'}
+];
+const benchmarks=[
+ {role:'Software QA Analysts & Testers',median:104300,group:'Computer and mathematical',keywords:['qa','quality assurance','testing','selenium','playwright','automation','test']},
+ {role:'Project Management Specialists',median:102320,group:'Business and financial operations',keywords:['project manager','program manager','project management','program management','pmo','agile','scrum']},
+ {role:'Computer Systems Analysts',median:105850,group:'Computer and mathematical',keywords:['systems analyst','business analyst','systems integration','requirements','guidewire','api']},
+ {role:'Software Developers',median:135980,group:'Computer and mathematical',keywords:['developer','software engineer','python','javascript','react','next.js','coding']},
+ {role:'Information Security Analysts',median:129180,group:'Computer and mathematical',keywords:['iam','okta','security','identity','access management','cyber']},
+ {role:'Data Scientists',median:120230,group:'Computer and mathematical',keywords:['data science','machine learning','analytics','python','modeling']},
+ {role:'Management Analysts',median:101860,group:'Business and financial operations',keywords:['transformation','process improvement','consulting','business analysis','operating model']},
+ {role:'Applied AI / ML Engineer (proxy)',median:135980,group:'Computer and mathematical',keywords:['ai engineer','machine learning','llm','agentic ai','generative ai','rag'],note:'Uses Software Developers as a broad occupational proxy; BLS has no single AI Engineer category.'}
+];
+const laGroups={'Computer and mathematical':{local:62.04,national:57.73},'Management':{local:77.12,national:69.84},'Business and financial operations':{local:49.32,national:45.78}};
+function showTab(id,el){document.querySelectorAll('main>section').forEach(x=>x.classList.add('hide'));document.getElementById(id).classList.remove('hide');document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+async function analyzeResume(){
+ const f=document.getElementById('file').files[0];let text=document.getElementById('resumeText').value.trim();
+ if(f){try{if(f.name.toLowerCase().endsWith('.txt'))text=await f.text();else if(f.name.toLowerCase().endsWith('.pdf')){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let pages=[];for(let i=1;i<=pdf.numPages;i++){let p=await pdf.getPage(i);let c=await p.getTextContent();pages.push(c.items.map(x=>x.str).join(' '))}text=pages.join('\n')}else if(f.name.toLowerCase().endsWith('.docx')){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js');let a=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});text=a.value}}catch(e){document.getElementById('parseStatus').textContent='Could not parse file. Paste the resume text instead.';return}}
+ if(!text){alert('Upload or paste your resume first.');return}resume=text;
+ const terms=['project manager','program manager','qa','quality assurance','automation','selenium','playwright','guidewire','insurance','agile','api','python','ai','data','systems analyst','iam','okta','integration','business analyst','cloud','testing','pmo','scrum'];
+ const found=terms.filter(t=>text.toLowerCase().includes(t));const roleNames=benchmarks.map(b=>b.role).filter((r,i)=>benchmarks[i].keywords.some(k=>text.toLowerCase().includes(k)));
+ document.getElementById('summary').value=text.slice(0,1100).replace(/\s+/g,' ').trim()+(text.length>1100?'…':'');
+ document.getElementById('skills').value=found.join(', ');
+ document.getElementById('roles').value=roleNames.join(', ')||'Project Management Specialists, Computer Systems Analysts';
+ document.getElementById('review').classList.remove('hide');document.getElementById('parseStatus').textContent=`Read ${text.length.toLocaleString()} characters. Review the detected profile below.`;
+}
+function loadScript(src){return new Promise((resolve,reject)=>{let s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
+function runAssessment(){
+ const corpus=(resume+' '+document.getElementById('summary').value+' '+document.getElementById('skills').value+' '+document.getElementById('roles').value).toLowerCase();
+ let ranked=benchmarks.map(b=>{let hits=b.keywords.filter(k=>corpus.includes(k)).length;return {...b,hits,score:Math.min(96,Math.round(hits/Math.max(3,b.keywords.length)*100)+Math.min(30,hits*7))}}).filter(b=>b.hits>0).sort((a,b)=>b.score-a.score).slice(0,5);
+ if(!ranked.length)ranked=[benchmarks[1]];
+ assessment={ranked,location:document.getElementById('location').value||'United States'};
+ const money=n=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+ document.getElementById('salaryOutput').innerHTML=ranked.map(b=>{let mid=b.median*(.88+b.score/100*.24),low=mid*.82,high=mid*1.22;return `<div class="job"><div class="row"><h3>${b.role}</h3><span class="pill">Resume fit ${b.score}/100</span></div><div class="kpis"><div class="kpi"><strong>${money(low)}–${money(high)}</strong><span>Illustrative annual range</span></div><div class="kpi"><strong>${money(mid)}</strong><span>Modeled midpoint</span></div><div class="kpi"><strong>${money(b.median)}</strong><span>National BLS median benchmark</span></div></div><p class="small">${b.note||'BLS May 2025 national median benchmark.'} Candidate range is a product model, not a BLS percentile interval.</p></div>`}).join('');
+ let location=assessment.location.toLowerCase();let geo='';
+ if(/los angeles|california|chatsworth|woodland hills|san fernando/.test(location)){
+  geo=`<p>For the Los Angeles–Long Beach–Anaheim metro (includes LA and Orange Counties), BLS May 2025 mean hourly wages:</p><table><tr><th>Occupation group</th><th>LA metro</th><th>U.S.</th><th>Difference</th></tr>${Object.entries(laGroups).map(([k,v])=>`<tr><td>${k}</td><td>$${v.local.toFixed(2)}</td><td>$${v.national.toFixed(2)}</td><td>+${((v.local/v.national-1)*100).toFixed(1)}%</td></tr>`).join('')}</table><p class="small">These are broad occupational-group means, not title-specific wages, and are not applied as a salary multiplier. For exact occupation-by-metro estimates, use the <a href="https://data.bls.gov/oes/#/area/0031080/2025" target="_blank" rel="noopener">BLS LA-area occupation table</a>.</p>`;
+ }else geo=`<p>Exact occupation-by-area figures vary by metro and are not inferred from a broad statewide multiplier. Select your location in the <a href="https://www.bls.gov/oes/tables.htm" target="_blank" rel="noopener">BLS OEWS area tables</a> for a direct benchmark. The assessment retains the national occupation medians until a matching local occupation estimate is confirmed.</p>`;
+ document.getElementById('geoOutput').innerHTML=geo;
+ let best=ranked[0],mid=best.median*(.88+best.score/100*.24),hour=mid/2080;
+ document.getElementById('rateOutput').innerHTML=`<table><tr><th>Rate basis</th><th>Illustrative rate</th></tr><tr><td>W-2 hourly equivalent</td><td>${money(hour)}/hour</td></tr><tr><td>Independent contract planning rate (×1.35)</td><td>${money(hour*1.35)}/hour</td></tr><tr><td>Consulting planning rate (×1.75)</td><td>${money(hour*1.75)}/hour</td></tr></table><p class="small">Multipliers are planning assumptions for benefits, overhead, utilization and business risk; not observed Fiverr rates or a market quote.</p>`;
+ const companyRank=jobs.map(j=>{let t=(j.title+' '+j.fit+' '+j.company).toLowerCase();let points=ranked.reduce((s,b)=>s+b.keywords.filter(k=>t.includes(k)).length,0);return {...j,points}}).sort((a,b)=>b.points-a.points);
+ document.getElementById('jobOutput').innerHTML=companyRank.map(j=>`<div class="job"><div class="row"><span class="pill ${j.status.includes('Verified official listing')?'green':'amber'}">${j.status}</span><span class="small">${j.posted}</span></div><h3>${j.company} · ${j.title}</h3><div class="small">${j.place}</div><p class="small">${j.fit}</p><a href="${j.url}" target="_blank" rel="noopener">Open employer career page ↗</a></div>`).join('');
+ document.getElementById('lifeOutput').innerHTML=`<div class="kpis"><div class="kpi"><strong>${money(mid)}</strong><span>Annual modeled midpoint</span></div><div class="kpi"><strong>${money(mid/12)}</strong><span>Monthly gross illustration</span></div><div class="kpi"><strong>${money(mid/12*.2)}</strong><span>20% savings example, before tax</span></div></div><p class="small">Illustrative only. Actual take-home depends on federal/state taxes, benefits, deductions, filing status and other factors.</p>`;
+ document.querySelectorAll('.tab')[1].click();
+}
+function emailQuestion(){let q=document.getElementById('wealthQuestion').value.trim();if(!q){alert('Enter a question first.');return}location.href='mailto:Sachin.techpro@gmail.com?subject='+encodeURIComponent('REsume360 wealth education question')+'&body='+encodeURIComponent(q+'\n\nPlease treat this as an educational question; no sensitive account information is included.')}
+function downloadProfile(){let n=document.getElementById('shareName').value||'Professional Profile',h=document.getElementById('shareHeadline').value||'Professional Profile',s=document.getElementById('shareSummary').value||document.getElementById('summary').value,e=document.getElementById('shareEmail').value;let doc=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${esc(n)} — Profile</title><style>body{font:16px/1.6 Arial;max-width:850px;margin:60px auto;padding:0 24px;color:#202124}h1{font-size:38px;margin-bottom:0}h2{color:#1769e0;font-size:18px}a{color:#1769e0}</style></head><body><h1>${esc(n)}</h1><h2>${esc(h)}</h2><p>${esc(s)}</p>${e?`<p><a href="mailto:${esc(e)}">${esc(e)}</a></p>`:''}<hr><small>Profile page generated locally with MyResume360.</small></body></html>`;let blob=new Blob([doc],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myresume360.html';a.click();URL.revokeObjectURL(a.href)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clearSession(){resume='';assessment=null;document.getElementById('resumeText').value='';document.getElementById('file').value='';document.getElementById('review').classList.add('hide');document.getElementById('summary').value='';document.getElementById('skills').value='';document.getElementById('roles').value='';document.getElementById('parseStatus').textContent='Session cleared.'}
+window.addEventListener('pagehide',()=>{resume='';assessment=null});
+</script>
+</body></html>
