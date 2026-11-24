@@ -9,11 +9,11 @@ REsume360 is a resume-first, interactive career and salary assessment demonstrat
 3. **Add optional career context.** Enter relevant location, compensation range, preferences and other optional details when comfortable. You can explore the demo without supplying every optional field.
 4. **Explore salary and role matches.** Review potential job titles, fit indications, estimated salary bands and hourly or consulting-rate scenarios. These are illustrative models, not verified offers or guaranteed market pay.
 5. **Build your next move.** Use the Career toolkit to compare pasted job requirements with your resume text, draft accomplishment bullets and STAR interview stories from your own examples, and create a downloadable 30-day plan. These tools run in the browser and do not invent experience or outcomes.\n6. **Explore jobs directly with employers.** Open employer career pages and any listed official job links. Listings are examples or previously researched opportunities, not a real-time vacancy feed. Confirm each role is still open on the employer website.
-7. **Generate MyResume360.** Create a standalone HTML professional profile that you can save and optionally host or share yourself. Generating a file does not publish it automatically.
+7. **Use the page-end prompts.** Each section offers a next step back to resume review, role tools or employer listings so visitors can follow the path from resume to application. Create a standalone HTML professional profile that you can save and optionally host or share yourself. Generating a file does not publish it automatically.
 8. **Explore financial education.** Review short introductions to retirement, investing, housing, insurance and related planning topics, with links to educational resources. This section is informational, not personalized financial advice.
 9. **Export your results.** Use the available report or print options to keep a copy of the assessment for your own reference.
 
-## What to expect
+## Feedback and account connections\n\nAfter one minute of visible use, the demo may show an optional feedback and newsletter prompt. Visitors can also open it from the footer. Submitting displays a local demo confirmation; responses and subscription choices are not sent or saved. The footer states this clearly. ChatGPT, Google and Apple account sign-in are future options and are not connected in this preview.\n\n## What to expect
 
 - **Privacy-first:** No account, server-side resume database or persistent browser storage is intentionally used by the demo. Resume and assessment information is processed locally in the active browser session.
 - **Session behavior:** Refreshing or closing the page may clear your entered information; save any exported files you want to retain.
