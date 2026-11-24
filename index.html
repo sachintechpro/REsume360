@@ -89,6 +89,21 @@ td,th{overflow-wrap:anywhere}
  .row>button,.row>.btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Career action studio */
+.tool-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.tool-intro p{max-width:700px;margin:4px 0 0;color:var(--muted)}
+.tool-card{background:linear-gradient(145deg,#fff,#f6fbf9);border:1px solid #dbe9e4;border-radius:18px;padding:20px;min-width:0}
+.tool-card label{font-size:14px}.tool-card textarea{min-height:92px}
+.tool-output{margin-top:14px;padding:16px;background:#eef7f5;border-radius:14px;min-height:52px;color:var(--ink)}
+.tool-output:empty{display:none}.tool-output ul{margin:8px 0 0;padding-left:20px}.tool-output li{margin:6px 0}
+.tool-meta{font-size:13px;color:var(--muted);margin-top:8px}
+.checklist{display:grid;gap:8px;margin-top:10px}
+.check-item{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);padding:11px 12px;border-radius:12px;font-size:14px}
+.check-item input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--green)}
+.tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{font-size:14px}
+@media(max-width:760px){.tool-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -96,7 +111,7 @@ td,th{overflow-wrap:anywhere}
 <header><div><div class="brand">RE<span>sume</span>360</div><div class="sub">Your career, in perspective.</div></div><div class="small">No account. No resume upload to a server.</div></header>
 <main>
 <div class="hero"><div class="eyebrow">A fresh perspective on your career</div><h1>Your experience is worth<br><em>more than a job title.</em></h1><p>See the strengths hidden in your resume, explore the roles they unlock, and build a smarter next move — grounded in salary research, not guesswork.</p><div class="row" style="margin-top:22px"><button onclick="document.getElementById('file').focus();document.getElementById('file').scrollIntoView({behavior:'smooth',block:'center'})">Explore my potential →</button><span class="small">Start with a resume. Stay in control of your story.</span></div></div>
-<div class="tabs no-print"><div class="tab active" onclick="showTab('profile',this)">1 · Resume</div><div class="tab" onclick="showTab('market',this)">2 · Salary & market</div><div class="tab" onclick="showTab('jobs',this)">3 · Jobs</div><div class="tab" onclick="showTab('life',this)">4 · Life & wealth</div><div class="tab" onclick="showTab('share',this)">5 · MyResume360</div></div>
+<div class="tabs no-print"><div class="tab active" onclick="showTab('profile',this)">1 · Resume</div><div class="tab" onclick="showTab('market',this)">2 · Salary & market</div><div class="tab" onclick="showTab('jobs',this)">3 · Jobs</div><div class="tab" onclick="showTab('tools',this)">4 · Career toolkit</div><div class="tab" onclick="showTab('life',this)">5 · Life & wealth</div><div class="tab" onclick="showTab('share',this)">6 · MyResume360</div></div>
 
 <section id="profile">
 <div class="grid">
@@ -125,6 +140,31 @@ td,th{overflow-wrap:anywhere}
 
 <section id="jobs" class="hide">
 <div class="grid"><div class="card span12"><h2>Go straight to the people doing the hiring.</h2><p class="section-lead">Skip the job-board maze. Explore roles and career searches on official employer websites. We highlight why a company or role may be worth your attention — then you decide what fits.</p><div class="insight"><strong>A smarter application strategy</strong>Before applying, match three accomplishments from your resume to the job’s top requirements. A tailored proof point is more persuasive than a long list of tools.</div><p class="tiny-disclosure">Some links point to previously researched postings; others open employer searches. Check current openings directly with each employer.</p><div id="jobOutput"><p class="muted">Run the resume assessment to see relevant matches.</p></div></div></div>
+</section>
+
+
+<section id="tools" class="hide">
+<div class="tool-intro"><div><div class="eyebrow">From insight to next move</div><h2>Build a stronger story. Make a clear plan.</h2><p>Turn your resume and a role you care about into practical next steps. These tools run in this browser session.</p></div><span class="pill green">Your words stay on this device</span></div>
+<div class="tool-grid">
+ <div class="card"><h2>Match your experience to a role</h2><p class="section-lead">Paste the key requirements from a job description. See which terms appear in your resume and where to look for a real example.</p>
+ <label>Role title</label><input id="matchRole" placeholder="e.g., Technical Program Manager"><label>Job requirements</label><textarea id="jobRequirements" placeholder="Paste a few requirements or responsibilities…"></textarea>
+ <div class="row" style="margin-top:12px"><button onclick="matchRequirements()">Check the match</button></div><div id="matchOutput" class="tool-output" aria-live="polite"></div>
+ </div>
+ <div class="card"><h2>Turn an accomplishment into a resume bullet</h2><p class="section-lead">Describe what was happening, what you did and what changed. Add a real result if you have one; REsume360 will not invent a number.</p>
+ <label>Challenge or need</label><input id="bulletChallenge" placeholder="A delivery was at risk because…"><label>What you did</label><input id="bulletAction" placeholder="I coordinated, analyzed, improved…"><label>Result or evidence (optional)</label><input id="bulletResult" placeholder="Met a deadline, reduced rework, improved clarity…">
+ <div class="row" style="margin-top:12px"><button onclick="buildBullet()">Draft my bullet</button><button class="secondary" onclick="copyToolText('bulletOutput')">Copy bullet</button></div><div id="bulletOutput" class="tool-output" aria-live="polite"></div>
+ </div>
+ <div class="card"><h2>Practice one interview story</h2><p class="section-lead">Build a concise STAR answer from a real situation. Keep the action specific and the result honest.</p>
+ <label>Situation</label><textarea id="starSituation" placeholder="What was happening? Who was affected?"></textarea><label>Task</label><input id="starTask" placeholder="What were you responsible for?"><label>Action</label><textarea id="starAction" placeholder="What did you personally do?"></textarea><label>Result</label><textarea id="starResult" placeholder="What changed? Include a verified measure or observable outcome."></textarea>
+ <div class="row" style="margin-top:12px"><button onclick="buildStar()">Shape my answer</button><button class="secondary" onclick="copyToolText('starOutput')">Copy answer</button></div><div id="starOutput" class="tool-output" aria-live="polite"></div>
+ </div>
+ <div class="card"><h2>Make a 30-day career plan</h2><p class="section-lead">Choose a direction and weekly time budget. Get a short plan that fits around your current responsibilities.</p>
+ <label>My next move</label><select id="planFocus"><option value="role">Move into a target role</option><option value="salary">Improve my compensation options</option><option value="contract">Explore independent project work</option><option value="pivot">Build toward AI or a new specialty</option></select>
+ <label>Target role or specialty</label><input id="planRole" placeholder="e.g., Senior Project Manager, AI Solutions Engineer"><label>Time I can set aside each week</label><select id="planHours"><option value="2">About 2 hours</option><option value="4" selected>About 4 hours</option><option value="6">About 6 hours</option></select>
+ <div class="row" style="margin-top:12px"><button onclick="buildCareerPlan()">Create my plan</button><button class="secondary" onclick="downloadCareerPlan()">Download plan</button></div><div id="planOutput" class="tool-output" aria-live="polite"></div>
+ </div>
+</div>
+<div class="insight"><strong>A useful rule for every tool</strong>Use your own examples and verify every detail before sharing. The match is a keyword aid, not a hiring score; drafts are starting points, not finished claims.</div>
 </section>
 
 <section id="life" class="hide">
@@ -203,5 +243,43 @@ function downloadProfile(){let n=document.getElementById('shareName').value||'Pr
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function clearSession(){resume='';assessment=null;document.getElementById('resumeText').value='';document.getElementById('file').value='';document.getElementById('review').classList.add('hide');document.getElementById('summary').value='';document.getElementById('skills').value='';document.getElementById('roles').value='';document.getElementById('parseStatus').textContent='Session cleared.'}
 window.addEventListener('pagehide',()=>{resume='';assessment=null});
+
+let careerPlanText='';
+const stopTerms=new Set(['the','and','with','for','from','into','that','this','will','have','has','are','was','were','you','your','our','their','they','who','what','when','where','how','all','any','can','may','must','able','ability','work','working','years','year','including','such','using','use','across','within','while','ensure','support','manage','strong','excellent','preferred','required','experience','skills','knowledge','team','teams','role','responsibilities','responsibility','qualifications','qualification']);
+function termList(text){return [...new Set((String(text).toLowerCase().match(/[a-z][a-z0-9+#./-]{2,}/g)||[]).filter(w=>!stopTerms.has(w)))];}
+function matchRequirements(){
+ const req=document.getElementById('jobRequirements').value.trim(),out=document.getElementById('matchOutput');
+ if(!req){out.textContent='Paste a few job requirements to compare.';return}
+ const profile=[resume,document.getElementById('skills')?.value||'',document.getElementById('summary')?.value||''].join(' ').toLowerCase();
+ if(!profile.trim()){out.textContent='Add or paste your resume in the Resume step first. Your text stays in this session.';return}
+ const terms=termList(req),matched=terms.filter(w=>profile.includes(w)),missing=terms.filter(w=>!profile.includes(w)),title=document.getElementById('matchRole').value.trim(),pct=terms.length?Math.round(matched.length/terms.length*100):0;
+ out.innerHTML='<strong>'+esc(title||'Role')+' · '+pct+'% keyword coverage</strong><p>'+matched.length+' of '+terms.length+' distinct terms appear in the resume text you supplied. This checks wording only; it does not assess your actual capability.</p><p><b>Already represented:</b> '+(matched.length?matched.map(esc).join(', '):'No direct term matches yet.')+'</p><p><b>Look for evidence to add:</b> '+(missing.length?missing.slice(0,16).map(esc).join(', '):'The main terms are present. Check each requirement for concrete proof.')+'</p><p class="tool-meta">Confirm each term reflects work you have actually done. Explain related experience without claiming a skill you do not have.</p>';
+}
+function buildBullet(){
+ const c=document.getElementById('bulletChallenge').value.trim(),a=document.getElementById('bulletAction').value.trim(),r=document.getElementById('bulletResult').value.trim(),out=document.getElementById('bulletOutput');
+ if(!a){out.textContent='Add what you personally did first.';return}
+ const cap=s=>s.charAt(0).toUpperCase()+s.slice(1),parts=[];
+ if(c)parts.push(cap(c.replace(/[.]+$/,'')));parts.push(a.replace(/[.]+$/,''));if(r)parts.push(r.replace(/[.]+$/,''));
+ out.innerHTML='<strong>Draft</strong><p>'+esc(parts.join('; '))+'.</p><p class="tool-meta">'+(r?'Review it for accuracy and add a verified measure where useful.':'Add an observable result if you can support it. Do not guess at a metric.')+'</p>';
+}
+function buildStar(){
+ const s=document.getElementById('starSituation').value.trim(),t=document.getElementById('starTask').value.trim(),a=document.getElementById('starAction').value.trim(),r=document.getElementById('starResult').value.trim(),out=document.getElementById('starOutput');
+ if(!s||!t||!a||!r){out.textContent='Complete each STAR section with a real example to shape the answer.';return}
+ out.innerHTML='<strong>Interview answer draft</strong><p><b>Situation:</b> '+esc(s)+'</p><p><b>Task:</b> '+esc(t)+'</p><p><b>Action:</b> '+esc(a)+'</p><p><b>Result:</b> '+esc(r)+'</p><p class="tool-meta">Practice it in your own voice. Be ready to explain your decisions, trade-offs and what you learned.</p>';
+}
+function buildCareerPlan(){
+ const focus=document.getElementById('planFocus').value,role=document.getElementById('planRole').value.trim()||'your target role',hours=document.getElementById('planHours').value;
+ const steps={
+ role:[['Choose a target','Pick one role title. Compare three real job descriptions and note the repeated needs.'],['Show relevant proof','Rewrite two experience bullets around real outcomes. Build one STAR story from a project.'],['Close one gap','Choose one recurring requirement and complete a credible learning activity or portfolio example.'],['Apply with focus','Select suitable openings, tailor the top third of your resume and track follow-ups.']],
+ salary:[['Set your baseline','Use the salary range as a starting estimate. Check current local postings and total compensation factors.'],['Collect proof','List three outcomes that show scope, complexity or business impact. Verify each detail.'],['Compare options','Review employer-direct roles and note their range, benefits, location and level when published.'],['Prepare the conversation','Practice a concise value statement and research compensation for the role and location.']],
+ contract:[['Define a service','Choose a clear project type, outcome and realistic scope based on work you can demonstrate.'],['Prepare proof','Create a short case study or sample deliverable using non-confidential information.'],['Set your boundaries','Estimate hours, steps, assumptions and a rate range that accounts for unpaid time and expenses.'],['Start targeted outreach','Identify a few relevant organizations and prepare a specific introduction for each.']],
+ pivot:[['Choose the bridge','Name a target specialty and identify which current strengths transfer to it.'],['Study real requirements','Compare three job descriptions and separate must-have experience from preferred tools.'],['Build one proof point','Complete a small project or case study that demonstrates a relevant skill honestly.'],['Get feedback and refine','Ask a knowledgeable peer to review your example, update your profile and plan the next learning step.']]
+ }[focus],label={role:'Target role',salary:'Compensation exploration',contract:'Independent project work',pivot:'New specialty'}[focus];
+ careerPlanText='REsume360 30-day career plan\n'+label+': '+role+'\nWeekly time: about '+hours+' hours\n\n'+steps.map((x,i)=>'Week '+(i+1)+' — '+x[0]+'\n'+x[1]).join('\n\n');
+ document.getElementById('planOutput').innerHTML='<strong>'+esc(role)+' · 30-day plan</strong><div class="checklist">'+steps.map((x,i)=>'<label class="check-item"><input type="checkbox" onchange="updatePlanProgress()"><span><b>Week '+(i+1)+': '+esc(x[0])+'</b><br>'+esc(x[1])+'</span></label>').join('')+'</div><p class="tool-meta" id="planProgress">0 of 4 steps complete · About '+esc(hours)+' hours per week.</p>';
+}
+function updatePlanProgress(){const checks=[...document.querySelectorAll('#planOutput input[type=checkbox]')],done=checks.filter(x=>x.checked).length,el=document.getElementById('planProgress');if(el)el.textContent=done+' of 4 steps complete.';}
+function downloadCareerPlan(){if(!careerPlanText)buildCareerPlan();if(!careerPlanText)return;const blob=new Blob([careerPlanText],{type:'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='resume360-30-day-career-plan.txt';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+function copyToolText(id){const el=document.getElementById(id),text=el?.innerText?.trim();if(!text)return;if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>{const note=document.createElement('span');note.className='tool-meta';note.textContent='Copied to clipboard.';el.appendChild(note);setTimeout(()=>note.remove(),1400)}).catch(()=>{});}
 </script>
 </body></html>
