@@ -122,6 +122,18 @@ label{font-size:14px}
 .feedback-dialog .subscribe-row label{margin:0;font-weight:500}
 .feedback-confirmation{padding:16px;background:#e9f6ef;border-radius:14px;margin-top:16px}
 @media(max-width:640px){.end-cta{display:block;padding:18px}.end-cta button{width:100%;margin-top:14px}.feedback-dialog{padding:20px;border-radius:20px}}
+
+.ai-consent{display:flex;align-items:flex-start;gap:10px;margin:16px 0 6px;padding:12px;background:#eef7f5;border-radius:12px}
+.ai-consent input{width:18px;flex:0 0 auto;margin-top:4px;accent-color:var(--green)}
+.ai-consent label{margin:0;font-size:14px;font-weight:650}
+.privacy-note{line-height:1.5}
+.ai-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
+.ai-result{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff;min-width:0}
+.ai-result h4{font-size:16px;margin:0}
+.ai-result p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.ai-result .row{align-items:center;justify-content:space-between}
+#analyzeFitButton:disabled{opacity:.7;cursor:wait}
+@media(max-width:760px){.ai-results{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -144,13 +156,19 @@ label{font-size:14px}
  <label>Work preference</label><select id="workMode"><option>Remote or hybrid</option><option>Remote only</option><option>Hybrid / onsite</option><option>Any</option></select>
  <label>Employment preference</label><select id="employment"><option>W-2 or contract</option><option>W-2 only</option><option>Contract / consulting</option><option>Any</option></select>
  <label>Target role titles (optional)</label><input id="targets" placeholder="Senior Project Manager, QA Manager, TPM…"></div>
- <div class="card span12 hide" id="review"><h2>Check our reading before you use the results.</h2><p class="section-lead">A resume can undersell work that matters or include terms without the context behind them. Edit this summary and skill list so the next step reflects your real experience.</p><label>Profile summary</label><textarea id="summary"></textarea><label>Detected skills / keywords</label><input id="skills"><label>Target role families</label><input id="roles"><div class="row" style="margin-top:12px"><button onclick="runAssessment()">Calculate market value</button><span class="small">Tip: Add accomplishments and measurable outcomes before comparing roles.</span></div></div>
+ <div class="card span12 hide" id="review"><h2>Check our reading before you use the results.</h2><p class="section-lead">A resume can undersell work that matters or include terms without the context behind them. Edit this summary and skill list so the next step reflects your real experience.</p><label>Profile summary</label><textarea id="summary"></textarea><label>Detected skills / keywords</label><input id="skills"><label>Target role families</label><input id="roles" placeholder="Review these, or add titles you want to explore">
+ <div class="ai-consent"><input id="aiConsent" type="checkbox"><label for="aiConsent">I agree to send my resume text for ChatGPT analysis of role and industry fit.</label></div>
+ <p class="small privacy-note">The analysis runs through REsume360’s server and the OpenAI API, not your personal ChatGPT login. Common email and phone patterns are removed before sending, but your name, employers and work history may remain. REsume360 does not save the resume text. OpenAI API data handling applies.</p>
+ <div class="row" style="margin-top:12px"><button id="analyzeFitButton" onclick="runAssessment()">Analyze my role and industry fit</button><span class="small">You’ll see the resume evidence behind each suggested title.</span></div></div>
 </div>
 <div class="end-cta"><div><h2>Ready to see what your experience can lead to?</h2><p>Review your profile, choose a target, then compare role signals and pay ranges.</p></div><button class="cta-button" id="cta-profile" onclick="advanceCareerJourney()">Start with my resume</button></div></section>
 
 <section id="market" class="hide">
 <div class="grid">
- <div class="card span12"><h2>Use the estimate as a starting point.</h2><p class="section-lead">Compare your role signals with published U.S. wage benchmarks, then check current openings and employer-posted ranges. The estimate is a planning aid, not a promise about what a specific employer will offer.</p><div id="careerInsight" class="insight"><strong>Career insight</strong>Upload a resume to discover your strongest role signals and a practical way to strengthen your market position.</div><div id="salaryOutput"><p class="muted">Upload and review your resume first.</p></div></div>
+ <div class="card span12"><h2>Use the estimate as a starting point.</h2><p class="section-lead">Compare your role signals with published U.S. wage benchmarks, then check current openings and employer-posted ranges. The estimate is a planning aid, not a promise about what a specific employer will offer.</p><div id="careerInsight" class="insight" aria-live="polite"><strong>Resume-specific analysis</strong>Upload a resume, review the extracted profile and choose the privacy checkbox to request role and industry recommendations.</div>
+ <h3>Job titles supported by your experience</h3><div id="titleOutput" class="ai-results"><p class="muted">Your suggested titles will appear here with evidence and gaps to consider.</p></div>
+ <h3 style="margin-top:20px">Industries that fit your background</h3><div id="industryOutput" class="ai-results"><p class="muted">Industry matches will be based on the employers, products and work described in your resume.</p></div>
+ <h3 style="margin-top:20px">Published wage references</h3><p class="small">These occupation categories use keyword overlap to find a broad BLS reference. They are separate from the ChatGPT role-fit assessment and do not establish qualification.</p><div id="salaryOutput"><p class="muted">Upload and review your resume first.</p></div></div>
  <div class="card span12"><h2>Location changes the conversation.</h2><div id="geoOutput"><p class="muted">Location comparisons appear after assessment.</p></div></div>
  <div class="card span12"><h2>Thinking beyond a salary?</h2><div id="rateOutput" class="muted">Calculated from the salary estimate using planning multipliers. These are illustrative pricing heuristics, not observed marketplace rates.</div></div>
 </div>
@@ -234,7 +252,6 @@ const benchmarks=[
  {role:'Information Security Analysts',median:129180,group:'Computer and mathematical',keywords:['iam','okta','security','identity','access management','cyber']},
  {role:'Data Scientists',median:120230,group:'Computer and mathematical',keywords:['data science','machine learning','analytics','python','modeling']},
  {role:'Management Analysts',median:101860,group:'Business and financial operations',keywords:['transformation','process improvement','consulting','business analysis','operating model']},
- {role:'Applied AI / ML Engineer (proxy)',median:135980,group:'Computer and mathematical',keywords:['ai engineer','machine learning','llm','agentic ai','generative ai','rag'],note:'Uses Software Developers as a broad occupational proxy; BLS has no single AI Engineer category.'}
 ];
 const laGroups={'Computer and mathematical':{local:62.04,national:57.73},'Management':{local:77.12,national:69.84},'Business and financial operations':{local:49.32,national:45.78}};
 let currentSectionId='profile';
@@ -243,34 +260,60 @@ async function analyzeResume(){
  const f=document.getElementById('file').files[0];let text=document.getElementById('resumeText').value.trim();
  if(f){try{if(f.name.toLowerCase().endsWith('.txt'))text=await f.text();else if(f.name.toLowerCase().endsWith('.pdf')){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;let pages=[];for(let i=1;i<=pdf.numPages;i++){let p=await pdf.getPage(i);let c=await p.getTextContent();pages.push(c.items.map(x=>x.str).join(' '))}text=pages.join('\n')}else if(f.name.toLowerCase().endsWith('.docx')){await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js');let a=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});text=a.value}}catch(e){document.getElementById('parseStatus').textContent='Could not parse file. Paste the resume text instead.';return}}
  if(!text){alert('Upload or paste your resume first.');return}resume=text;
- const terms=['project manager','program manager','qa','quality assurance','automation','selenium','playwright','guidewire','insurance','agile','api','python','ai','data','systems analyst','iam','okta','integration','business analyst','cloud','testing','pmo','scrum'];
+ const terms=['project manager','program manager','qa','quality assurance','automation','selenium','playwright','guidewire','insurance','agile','api','python','data','systems analyst','iam','okta','integration','business analyst','cloud','testing','pmo','scrum'];
  const found=terms.filter(t=>text.toLowerCase().includes(t));const roleNames=benchmarks.map(b=>b.role).filter((r,i)=>benchmarks[i].keywords.some(k=>text.toLowerCase().includes(k)));
  document.getElementById('summary').value=text.slice(0,1100).replace(/\s+/g,' ').trim()+(text.length>1100?'…':'');
  document.getElementById('skills').value=found.join(', ');
- document.getElementById('roles').value=roleNames.join(', ')||'Project Management Specialists, Computer Systems Analysts';
+ document.getElementById('roles').value=roleNames.join(', ')||'No close role phrases detected — add detail about your projects and responsibilities.';
  document.getElementById('review').classList.remove('hide');document.getElementById('parseStatus').textContent=`Read ${text.length.toLocaleString()} characters. Review the detected profile below.`;updateJourneyCtas();
 }
 function loadScript(src){return new Promise((resolve,reject)=>{let s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
-function runAssessment(){
+async function runAssessment(){
+ if(!resume){alert('Review your resume first.');return}
+ if(!document.getElementById('aiConsent').checked){document.getElementById('aiConsent').focus();alert('Please review and accept the resume analysis notice before continuing.');return}
+ const button=document.getElementById('analyzeFitButton');button.disabled=true;button.textContent='Reading your experience…';
+ document.getElementById('careerInsight').innerHTML='<strong>Reading your resume in context…</strong><p>Matching the work you describe to realistic role titles and industries. This may take a few moments.</p>';
+ document.getElementById('titleOutput').innerHTML='';document.getElementById('industryOutput').innerHTML='';
+ let aiAnalysis=null,aiError='';
+ try{
+  const response=await fetch('https://resume360-analysis-api.onrender.com/analyze',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',body:JSON.stringify({resumeText:resume,privacyConsent:true})});
+  const payload=await response.json();if(!response.ok)throw new Error(payload.error||'Analysis could not be completed.');
+  aiAnalysis=payload.analysis;
+ }catch(error){aiError=error.message||'The analysis service is unavailable.'}
+ button.disabled=false;button.textContent='Analyze my role and industry fit';
  const corpus=(resume+' '+document.getElementById('summary').value+' '+document.getElementById('skills').value+' '+document.getElementById('roles').value).toLowerCase();
  let ranked=benchmarks.map(b=>{let hits=b.keywords.filter(k=>corpus.includes(k)).length;return {...b,hits,score:Math.min(96,Math.round(hits/Math.max(3,b.keywords.length)*100)+Math.min(30,hits*7))}}).filter(b=>b.hits>0).sort((a,b)=>b.score-a.score).slice(0,5);
- if(!ranked.length)ranked=[benchmarks[1]];
  assessment={ranked,location:document.getElementById('location').value||'United States'};updateJourneyCtas();
  const money=n=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
- document.getElementById('salaryOutput').innerHTML=ranked.map(b=>{let mid=b.median*(.88+b.score/100*.24),low=mid*.82,high=mid*1.22;return `<div class="job"><div class="row"><h3>${b.role}</h3><span class="pill">Resume fit ${b.score}/100</span></div><div class="kpis"><div class="kpi"><strong>${money(low)}–${money(high)}</strong><span>Illustrative annual range</span></div><div class="kpi"><strong>${money(mid)}</strong><span>Modeled midpoint</span></div><div class="kpi"><strong>${money(b.median)}</strong><span>National BLS median benchmark</span></div></div><p class="small">${b.note||'BLS May 2025 national median benchmark.'} Candidate range is a product model, not a BLS percentile interval.</p></div>`}).join('');
+ document.getElementById('salaryOutput').innerHTML=ranked.length?ranked.map(b=>{let mid=b.median*(.88+b.score/100*.24),low=mid*.82,high=mid*1.22;return `<div class="job"><div class="row"><h3>${b.role}</h3><span class="pill">Resume fit ${b.score}/100</span></div><div class="kpis"><div class="kpi"><strong>${money(low)}–${money(high)}</strong><span>Illustrative annual range</span></div><div class="kpi"><strong>${money(mid)}</strong><span>Modeled midpoint</span></div><div class="kpi"><strong>${money(b.median)}</strong><span>National BLS median benchmark</span></div></div><p class="small">${b.note||'BLS May 2025 national median benchmark.'} Candidate range is a product model, not a BLS percentile interval.</p></div>`}).join(''):'<p class="muted">No close BLS occupation match was found from the text provided. Add more detail to your profile; this is a data coverage gap, not a judgment of your ability.</p>';
  let location=assessment.location.toLowerCase();let geo='';
  if(/los angeles|california|chatsworth|woodland hills|san fernando/.test(location)){
   geo=`<p>For the Los Angeles–Long Beach–Anaheim metro (includes LA and Orange Counties), BLS May 2025 mean hourly wages:</p><table><tr><th>Occupation group</th><th>LA metro</th><th>U.S.</th><th>Difference</th></tr>${Object.entries(laGroups).map(([k,v])=>`<tr><td>${k}</td><td>$${v.local.toFixed(2)}</td><td>$${v.national.toFixed(2)}</td><td>+${((v.local/v.national-1)*100).toFixed(1)}%</td></tr>`).join('')}</table><p class="small">These are broad occupational-group means, not title-specific wages, and are not applied as a salary multiplier. For exact occupation-by-metro estimates, use the <a href="https://data.bls.gov/oes/#/area/0031080/2025" target="_blank" rel="noopener">BLS LA-area occupation table</a>.</p>`;
  }else geo=`<p>Exact occupation-by-area figures vary by metro and are not inferred from a broad statewide multiplier. Select your location in the <a href="https://www.bls.gov/oes/tables.htm" target="_blank" rel="noopener">BLS OEWS area tables</a> for a direct benchmark. The assessment retains the national occupation medians until a matching local occupation estimate is confirmed.</p>`;
  const lead=ranked[0],second=ranked[1];
- document.getElementById('careerInsight').innerHTML=`<strong>Your strongest visible signal: ${esc(lead.role)}</strong>Your resume contains ${lead.hits} matching signals for this role family.${second?' Another direction worth investigating is '+esc(second.role)+'.':''} <br><br><b>Try this:</b> Rewrite one resume bullet as <em>challenge → action → measurable result</em>. Then compare the role matches again. This is a keyword-based exploration, not a judgment of your ability.`;
+ if(lead)document.getElementById('careerInsight').innerHTML=`<strong>Keyword signals to explore: ${esc(lead.role)}</strong>${second?'Other occupation benchmark terms appeared for '+esc(second.role)+'.':''} These are keyword matches only; they do not determine qualification. Use the Career toolkit to compare a real job description with your experience.`;
+ else document.getElementById('careerInsight').innerHTML='<strong>No clear occupational benchmark match yet.</strong> Add more detail about responsibilities, projects, tools and outcomes. The current demo does not use ChatGPT to interpret career context.';
  document.getElementById('geoOutput').innerHTML=geo;
- let best=ranked[0],mid=best.median*(.88+best.score/100*.24),hour=mid/2080;
+ const best=ranked[0];
+ if(best){const mid=best.median*(.88+best.score/100*.24),hour=mid/2080;
  document.getElementById('rateOutput').innerHTML=`<table><tr><th>Rate basis</th><th>Illustrative rate</th></tr><tr><td>W-2 hourly equivalent</td><td>${money(hour)}/hour</td></tr><tr><td>Independent contract planning rate (×1.35)</td><td>${money(hour*1.35)}/hour</td></tr><tr><td>Consulting planning rate (×1.75)</td><td>${money(hour*1.75)}/hour</td></tr></table><p class="small">Multipliers are planning assumptions for benefits, overhead, utilization and business risk; not observed Fiverr rates or a market quote.</p>`;
+ document.getElementById('lifeOutput').innerHTML=`<div class="kpis"><div class="kpi"><strong>${money(mid)}</strong><span>Annual modeled midpoint</span></div><div class="kpi"><strong>${money(mid/12)}</strong><span>Monthly gross illustration</span></div><div class="kpi"><strong>${money(mid/12*.2)}</strong><span>20% savings example, before tax</span></div></div><p class="small">Illustrative only. Actual take-home depends on taxes, benefits, deductions, filing status and other factors.</p>`;
+ }else{document.getElementById('rateOutput').textContent='A rate scenario is not shown because the resume did not match a published occupational benchmark.';document.getElementById('lifeOutput').textContent='Add more work history before exploring a gross-income scenario.'}
  const companyRank=jobs.map(j=>{let t=(j.title+' '+j.fit+' '+j.company).toLowerCase();let points=ranked.reduce((s,b)=>s+b.keywords.filter(k=>t.includes(k)).length,0);return {...j,points}}).sort((a,b)=>b.points-a.points);
  document.getElementById('jobOutput').innerHTML=companyRank.map(j=>`<div class="job"><div class="row"><span class="pill ${j.status.includes('Verified official listing')?'green':'amber'}">${j.status}</span><span class="small">${j.posted}</span></div><h3>${j.company} · ${j.title}</h3><div class="small">${j.place}</div><p class="small">${j.fit}</p><a href="${j.url}" target="_blank" rel="noopener">Open employer career page ↗</a></div>`).join('');
- document.getElementById('lifeOutput').innerHTML=`<div class="kpis"><div class="kpi"><strong>${money(mid)}</strong><span>Annual modeled midpoint</span></div><div class="kpi"><strong>${money(mid/12)}</strong><span>Monthly gross illustration</span></div><div class="kpi"><strong>${money(mid/12*.2)}</strong><span>20% savings example, before tax</span></div></div><p class="small">Illustrative only. Actual take-home depends on federal/state taxes, benefits, deductions, filing status and other factors.</p>`;
+ renderAIAnalysis(aiAnalysis,aiError);
  document.querySelectorAll('.tab')[1].click();
+}
+function renderAIAnalysis(analysis,errorText){
+ const summary=document.getElementById('careerInsight'),titles=document.getElementById('titleOutput'),industries=document.getElementById('industryOutput');
+ if(!analysis){summary.innerHTML='<strong>ChatGPT analysis is not available yet.</strong><p>'+esc(errorText||'The analysis service could not be reached.')+' Your wage references below are still keyword-based and are not personalized role recommendations.</p>';titles.innerHTML='<p class="muted">No role titles were generated. Try again after the analysis service is configured.</p>';industries.innerHTML='<p class="muted">No industry matches were generated.</p>';return}
+ const seniority=analysis.seniority&&analysis.seniority!=='unclear'?'Likely level: '+esc(analysis.seniority.replace('-',' '))+'.':'';
+ const next=(analysis.nextSteps||[]).length?'<p><b>Useful next steps:</b> '+analysis.nextSteps.map(esc).join(' · ')+'</p>':'';
+ summary.innerHTML='<strong>Resume-specific read</strong><p>'+esc(analysis.summary)+'</p><p class="small">'+seniority+'</p>'+next;
+ const fitLabel={strong:'Strong evidence',adjacent:'Adjacent fit',stretch:'Stretch role'};
+ titles.innerHTML=(analysis.qualifyingTitles||[]).length?analysis.qualifyingTitles.map(item=>'<article class="ai-result"><div class="row"><h4>'+esc(item.title)+'</h4><span class="pill '+(item.fit==='strong'?'green':item.fit==='stretch'?'amber':'')+'">'+esc(fitLabel[item.fit]||item.fit)+'</span></div><p>'+esc(item.rationale)+'</p><p><b>Resume evidence:</b> '+(item.evidence||[]).map(esc).join(' · ')+'</p>'+(item.gaps?.length?'<p><b>Address in an application:</b> '+item.gaps.map(esc).join(' · ')+'</p>':'')+(item.industries?.length?'<p class="small"><b>Related industries:</b> '+item.industries.map(esc).join(', ')+'</p>':'')+'</article>').join(''):'<p class="muted">The resume did not provide enough evidence for a defensible title match. Add more detail about scope, decisions, tools and outcomes.</p>';
+ const industryLabel={strong:'Direct experience',adjacent:'Transferable experience',exploratory:'Worth exploring'};
+ industries.innerHTML=(analysis.industries||[]).length?analysis.industries.map(item=>'<article class="ai-result"><div class="row"><h4>'+esc(item.name)+'</h4><span class="pill '+(item.fit==='strong'?'green':item.fit==='exploratory'?'amber':'')+'">'+esc(industryLabel[item.fit]||item.fit)+'</span></div><p>'+esc(item.rationale)+'</p><p><b>Resume evidence:</b> '+(item.evidence||[]).map(esc).join(' · ')+'</p>'+(item.exampleTitles?.length?'<p class="small"><b>Example titles:</b> '+item.exampleTitles.map(esc).join(', ')+'</p>':'')+'</article>').join(''):'<p class="muted">The resume does not identify enough industry context for a strong match yet.</p>';
 }
 function emailQuestion(){let q=document.getElementById('wealthQuestion').value.trim();if(!q){alert('Enter a question first.');return}location.href='mailto:Sachin.techpro@gmail.com?subject='+encodeURIComponent('REsume360 wealth education question')+'&body='+encodeURIComponent(q+'\n\nPlease treat this as an educational question; no sensitive account information is included.')}
 function downloadProfile(){let n=document.getElementById('shareName').value||'Professional Profile',h=document.getElementById('shareHeadline').value||'Professional Profile',s=document.getElementById('shareSummary').value||document.getElementById('summary').value,e=document.getElementById('shareEmail').value;let doc=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${esc(n)} — Profile</title><style>body{font:16px/1.6 Arial;max-width:850px;margin:60px auto;padding:0 24px;color:#202124}h1{font-size:38px;margin-bottom:0}h2{color:#1769e0;font-size:18px}a{color:#1769e0}</style></head><body><h1>${esc(n)}</h1><h2>${esc(h)}</h2><p>${esc(s)}</p>${e?`<p><a href="mailto:${esc(e)}">${esc(e)}</a></p>`:''}<hr><small>Profile page generated locally with MyResume360.</small></body></html>`;let blob=new Blob([doc],{type:'text/html'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myresume360.html';a.click();URL.revokeObjectURL(a.href)}
